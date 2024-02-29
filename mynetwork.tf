@@ -31,8 +31,8 @@ module "jenkins-vm" {
   instance_name   = "jenkins-vm-tf"
   instance_region = "us-central1"
   instance_zone   = "us-central1-a"
-  instance_type   = "n1-standard-2"
-  image           = "ubuntu-os-cloud/ubuntu-2004-lts" # ubuntu-1804-lts"
+  instance_type   = "e2-medium"
+  image           = "ubuntu-os-cloud/ubuntu-2204-lts" # ubuntu-2204-lts"
   #  startup_script      = "${var.init_scrip_docker}"
   instance_subnetwork = google_compute_network.mynetwork.self_link
 }
@@ -43,8 +43,8 @@ module "web-deploy-vm" {
   instance_name   = "web-deploy-vm-tf"
   instance_region = "us-central1"
   instance_zone   = "us-central1-a"
-  instance_type   = "n1-standard-1"
-  image           = "ubuntu-os-cloud/ubuntu-2004-lts"  #ubuntu-1804-lts"  
+  instance_type   = "e2-medium"
+  image           = "ubuntu-os-cloud/ubuntu-2204-lts"  #ubuntu-2204-lts"  
   #  startup_script      = "${var.init_scrip_apache2}"
   instance_subnetwork = google_compute_network.mynetwork.self_link
 }
@@ -106,11 +106,11 @@ resource "null_resource" "execute" {
       # Instalacion de docker composer
       "sudo curl -L https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
       "sudo chmod +x /usr/local/bin/docker-compose",
-      # Instalacion de Java jdk 8
-      "sudo apt install openjdk-8-jdk -y",
-      "echo JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre\" | sudo tee -a /etc/environment",
-      # Instalacion de Node JS 16
-      "curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -",
+      # Instalacion de Java jdk 17
+      "sudo apt install openjdk-17-jdk -y",
+      "echo JAVA_HOME=\"/usr/lib/jvm/java-17-openjdk-amd64/jre\" | sudo tee -a /etc/environment",
+      # Instalacion de Node JS LTS
+      "curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -",
       "sudo apt-get install -y nodejs",
       "sudo apt-get install npm -y"
 

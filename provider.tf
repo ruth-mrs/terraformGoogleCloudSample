@@ -5,14 +5,14 @@
 
 variable "gcp_project" {
   # Configurar el nombre del proyecto en GCP
-  default = "cnsa-2022"
+  default = "cnsa-2024"
 }
 
 terraform {
   required_providers {
     google = {
-      source  = "hashicorp/google"
-      version = "4.11.0"
+      source = "hashicorp/google"
+      version = "5.18.0"
     }
   }
 }
