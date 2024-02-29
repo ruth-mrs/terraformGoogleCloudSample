@@ -50,7 +50,7 @@ module "web-deploy-vm" {
 }
 
 
-resource "null_resource" "execute" {
+resource "null_resource" "provision-jenkins-vm" {
 
   provisioner "remote-exec" {
     connection {
@@ -86,7 +86,14 @@ resource "null_resource" "execute" {
     ]
     on_failure = continue
   }
+  depends_on = [
+    # Init script must be created before this IP address could
+    # actually be used, otherwise the services will be unreachable.
+    module.jenkins-vm.instance_ip_addr
+  ]
+}
 
+resource "null_resource" "provision-deploy-vm" {
 
   provisioner "remote-exec" {
     connection {
@@ -122,17 +129,17 @@ resource "null_resource" "execute" {
       # Instalacion de Java jdk 17
       "sudo apt install openjdk-17-jdk -y",
       "echo JAVA_HOME=\"/usr/lib/jvm/java-17-openjdk-amd64/jre\" | sudo tee -a /etc/environment",
-      # Instalacion de Node JS LTS
-      "curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -",
-      "sudo apt-get install -y nodejs",
-      "sudo apt-get install npm -y"
-
+      # Instalacion de Node JS LTS. Install Node.js and npm using the Node Version Manager (nvm)
+      "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash",
+      "export NVM_DIR=\"$HOME/.nvm\"",
+      "[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"",
+      "nvm install --lts"
     ]
     on_failure = continue
   }
   depends_on = [
     # Init script must be created before this IP address could
     # actually be used, otherwise the services will be unreachable.
-    module.web-deploy-vm.instance_ip_addr, module.jenkins-vm.instance_ip_addr
+    module.web-deploy-vm.instance_ip_addr
   ]
 }
