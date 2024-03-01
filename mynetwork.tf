@@ -128,7 +128,7 @@ resource "null_resource" "provision-deploy-vm" {
       "sudo usermod -aG docker $${USER}",
       # Instalacion de Java jdk 17
       "sudo apt install openjdk-17-jdk -y",
-      "echo JAVA_HOME=\"/usr/lib/jvm/java-17-openjdk-amd64/jre\" | sudo tee -a /etc/environment",
+      "echo JAVA_HOME=\"/usr/lib/jvm/java-17-openjdk-amd64\" | sudo tee -a /etc/environment",
       # Instalacion de Node JS LTS. Install Node.js and npm using the Node Version Manager (nvm)
       "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash",
       "export NVM_DIR=\"$HOME/.nvm\"",
