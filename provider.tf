@@ -5,14 +5,14 @@
 
 variable "gcp_project" {
   # Configurar el nombre del proyecto en GCP
-  default = "cnsa-2024"
+  default = "cosas-463317"
 }
 
 terraform {
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = "5.18.0"
+      version = "6.40.0"
     }
   }
 }
@@ -21,4 +21,5 @@ provider "google" {
   project = var.gcp_project
   region  = "us-central1"
   zone    = "us-central1-c"
+  credentials = file("file.json")
 }
